@@ -1,0 +1,105 @@
+﻿html, body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei",FreeSans,Arimo,"Droid Sans","wenquanyi micro hei","Hiragino Sans GB","Hiragino Sans GB W3",FontAwesome,sans-serif;
+}
+
+/*基本*/
+.tk-container {
+    width:100%;
+}
+
+/*布局*/
+.tk-left {
+    float:left;
+}
+.tk-right {
+    float:right;
+}
+.tk-center {
+    margin:0 auto;
+}
+
+/*垂直居中*/
+.tk-vertical-center:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.tk-vertical-center > div, .tk-vertical-center > span, .tk-vertical-center > a, .tk-vertical-center > p, .tk-vertical-center > i, .tk-vertical-center > img {
+    display: inline-block;
+    vertical-align: middle;
+}
+/*顶部停靠*/
+.tk-vertical-bottom > div, .tk-vertical-bottom > span, .tk-vertical-bottom > a, .tk-vertical-bottom > p, .tk-vertical-bottom > i, .tk-vertical-bottom > img {
+    display: inline-block;
+    vertical-align: bottom;
+}
+.tk-vertical-bottom:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+/*比例模式*/
+.tk-flex-row {
+    flex-flow: row;
+    display: flex;
+}
+.tk-flex-column {
+    flex-flow: column;
+    display: flex;
+}
+.tk-flex-1 {
+    flex:1;
+}
+.tk-flex-2 {
+    flex: 2;
+}
+.tk-flex-3 {
+    flex: 3;
+}
+.tk-flex-4 {
+    flex: 4;
+}
+.tk-flex-5 {
+    flex: 5;
+}
+
+
+/*combox*/
+.tk-combox {
+    margin: 0;
+    padding: 0;
+    width: 100px;
+    height: 500px;
+    transition: 1s;
+    overflow: hidden;
+}
+.tk-combox-hide {
+    height: 25px;
+    transition: .4s;
+}
+
+.tk-combox shadow {
+    width: 100%;
+    display: block;
+    padding: 4px;
+    cursor: pointer;
+}
+.tk-combox > li {
+        list-style: none;
+        padding: 4px;
+        font-size: 14px;
+    }
+.tk-combox > li:hover {
+            transition: .4s;
+            border-bottom: 1px solid #f3f3f3;
+            cursor: pointer;
+            padding: 5px 0;
+            font-size: 16px;
+        }
+        

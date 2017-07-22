@@ -1,0 +1,151 @@
+<html>
+
+<head>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="css/tk.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/tk.js"></script>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+    <div class="header">
+        <h4 class="header-title">天醒之路</h4>
+        <i id="menu"></i>
+    </div>
+    <div class="container" id="container" >
+        <div class="catalog-tool">
+            <span>目录</span>
+            <i class="catalog-sort-down" id="catalog-sort"></i>
+        </div>
+        <div class="catalog-list" v-if="obj.length > 0">
+            <div class="catalog-item"  v-for="item in obj" v-on:click="ItemClick(item)">
+                <i></i>
+                <span>{{ item.title }}</span>
+                <i></i>
+            </div>
+        </div>
+    </div>
+
+    <!--加载-->
+    <div class="loading-container loading-container-hidden"><img src="img/loading.svg" /></div>
+    <!--底部栏-->
+    <div class="footer-container footer-container-hidden">
+        <div class="footer-background"></div>
+        <div class="footer-content">
+            <ul>
+               <li class="footer-exit" onclick="location.href='index.html'">
+                    <embed  src="img/home.svg" />
+                    <span>主页</span>
+                </li>
+               <li class="footer-exit" onclick="location.reload()">
+                    <embed  src="img/refresh.svg" />
+                    <span>刷新</span>
+                </li>
+                <li class="footer-search" onclick="alert('随便放放')">
+                    <embed  src="img/abourt.svg" />
+                    <span>关于</span>
+                </li>
+                 <li class="footer-exit" onclick="location.href='search.html'">
+                    <embed  src="img/search.svg" />
+                    <span>搜索</span>
+                </li>
+                <!--<li class="footer-exit">
+                    <embed  src="img/exit.svg" />
+                    <span>退出</span>
+                </li>-->
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+var model=new Vue({
+        el: '#container',
+        data: {
+          obj:[]
+        },
+        methods:{
+           ItemClick:function(item){
+               location.href='book.html?'+JSON.stringify(item);
+           }
+        }
+    });
+    //总数据集合
+    var list=[];
+    function LoadData(json){
+        var obj = $.parseJSON(json);
+        list = obj.sort(function (a, b) {
+            return b.index - a.index;
+        });
+        PushVueData(list);
+        loading();
+    }
+    function PushVueData(data,count) {
+        model.obj=[];
+        if (typeof (count) == 'undefined') {
+            count = 20;
+        }
+        for (var i = 0; i < count; i++) {
+            model.obj.push(data[i]);
+        }
+    }
+
+    //滚动加载
+    var isLoad = false;
+    tk.initScrollLoad(0.8, function () {
+        if (!isLoad) {
+            loading();
+            isLoad = true;
+            var count=$('.catalog-item').length;
+            for (var i = 0; i < 20; i++) {
+                var element = list[count+i];  
+                if(typeof(element)=='undefined'){
+                    break;
+                }
+                model.obj.push(element);         
+            } 
+            loading();
+            isLoad = false;
+        }
+    });
+
+    $(function(){
+         var obj=QueryJsonObj();
+         $('.header-title').html(obj.title);
+         loading();
+         var json=QueryJson();
+         android.GetBook(json);
+
+         $('.search-input').keypress(function(e) {
+            if(e.which == 13) {
+                var key=$(this).val();
+                android.Search(key);
+            }
+         });
+
+        //倒序点击
+         $('#catalog-sort').click(function(){
+            if($(this).hasClass('catalog-sort-down')){
+
+                list=list.sort(function(a,b){
+                    return a.index-b.index;
+                });
+                 PushVueData(list);
+                $(this).removeClass('catalog-sort-down');
+                $(this).addClass('catalog-sort-up');
+            }else{
+                list=list.sort(function(a,b){
+                    return b.index-a.index;
+                });
+                PushVueData(list);
+                $(this).removeClass('catalog-sort-up');
+                $(this).addClass('catalog-sort-down');
+            }
+         });
+    });
+</script>

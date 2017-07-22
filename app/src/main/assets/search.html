@@ -1,0 +1,96 @@
+<head>
+    <meta name="viewport"
+          content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="css/tk.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/vue.js"></script>
+</head>
+
+<body>
+<div class="header">
+    <input class="search-input" type="text" value="" placeholder="请输入关键字"/>
+    <i id="menu"></i>
+</div>
+<div class="container" id="container">
+    <div class="book-item" v-if="obj.length>0" v-for="item in obj" v-on:click="ItemClick(item)">
+        <img :src="item.img"/>
+        <div class="desc tk-flex-column">
+            <div class="tk-flex-1">{{ item.title }}</div>
+            <div class="tk-flex-2"> {{ item.desc }}</div>
+            <div class="tk-flex-1"></div>
+            <div class="tk-flex-1"></div>
+        </div>
+    </div>
+
+    <!--<div class="book-item">-->
+    <!--<img src="http://www.bqg5200.com/files/article/image/4/4463/4463s.jpg" />-->
+    <!--<div class="desc tk-flex-column">-->
+    <!--<div class="tk-flex-1">書本標題</div>-->
+    <!--<div class="tk-flex-2"> 一念成沧海，一念化桑田。一念斩千魔，一念诛万仙。唯我念……永恒</div>-->
+    <!--<div class="tk-flex-1">最新章節：第十七章 塔倒了怎么办</div>-->
+    <!--<div class="tk-flex-1">已看到：第十七章 塔倒了怎么办</div>-->
+    <!--</div>-->
+    <!--</div>-->
+</div>
+
+<!--加载-->
+<div class="loading-container loading-container-hidden"><img src="img/loading.svg"/></div>
+<!--底部栏-->
+<div class="footer-container footer-container-hidden">
+    <div class="footer-background"></div>
+    <div class="footer-content">
+        <ul>
+            <li class="footer-exit" onclick="location.href='index.html'">
+                <embed src="img/home.svg"/>
+                <span>主页</span>
+            </li>
+            <li class="footer-exit" onclick="location.reload()">
+                <embed src="img/refresh.svg"/>
+                <span>刷新</span>
+            </li>
+            <li class="footer-search" onclick="alert('随便放放')">
+                <embed src="img/abourt.svg"/>
+                <span>关于</span>
+            </li>
+            <li class="footer-exit" onclick="location.href='search.html'">
+                <embed src="img/search.svg"/>
+                <span>搜索</span>
+            </li>
+            <!--<li class="footer-exit">
+                <embed  src="img/exit.svg" />
+                <span>退出</span>
+            </li>-->
+        </ul>
+    </div>
+</div>
+</body>
+
+</html>
+<script>
+    var model=new Vue({
+        el: '#container',
+        data: {
+          obj:[]
+        },
+        methods:{
+           ItemClick:function(item){
+               location.href='catalog.html?'+JSON.stringify(item);
+           }
+        }
+    });
+    function LoadData(json){
+        model.obj=$.parseJSON(json);
+    }
+    $(function(){
+         $('.search-input').keypress(function(e) {
+            if(e.which == 13) {
+                var key=$(this).val();
+                android.Search(key);
+            }
+         });
+    });
+
+</script>
