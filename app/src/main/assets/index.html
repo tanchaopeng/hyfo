@@ -26,6 +26,17 @@
                 <div class="tk-flex-1" ></div>
             </div>
         </div>
+
+        <div class="history-list" v-for="item in historyData" v-on:click="HistoryClick(item)">
+            <div class="history-item"  >
+                <i></i>
+                <span>{{ item.title }}</span>
+                <br/>
+                <span>{{ item.time }}</span>
+                <i></i>
+                <span>{{ item.bookName }}</span>
+            </div>
+        </div>
     </div>
 
     <!--加载-->
@@ -51,6 +62,7 @@
                     <embed  src="img/search.svg" />
                     <span>搜索</span>
                 </li>
+                
                 <!--<li class="footer-exit">
                     <embed  src="img/exit.svg" />
                     <span>退出</span>
@@ -62,16 +74,32 @@
 
 </html>
 <script>
+    Vue.config.silent = true;
     var model=new Vue({
         el:'#container',
         data:{
-            obj:[{"desc":"“路平，起床上课。” “再睡五分钟。” “给我起来！” 哗！阳光洒下，照遍路平全身。 …","img":"http://www.bqg5200.com/files/article/image/0/198/198s.jpg","link":"http://www.bqg5200.com/xiaoshuo/0/198/","title":"天醒之路"},{"desc":"一觉醒来，世界大变。 熟悉的高中传授的是魔法，告诉大家要成为一名出色的魔法师。 居住的都市之外游荡着袭击人类的魔物妖兽，虎视眈眈。 崇尚科学的世界变成了崇尚魔法，偏偏","img":"http://www.bqg5200.com/files/article/image/0/77/77s.jpg","link":"http://www.bqg5200.com/xiaoshuo/0/77/","title":"全职法师"},{"desc":"回去，最强职业者的逆天不朽之路…… ...","img":"http://www.bqg5200.com/files/article/image/4/4705/4705s.jpg","link":"http://www.bqg5200.com/xiaoshuo/4/4705/","title":"不朽之路"},{"desc":"全球大地震，瞬间摧毁了固有的文明和秩序，幸存者中的觉醒者，遇难者中的不死者，以及恐怖的变异种，开始出现在这变成了废墟…","img":"http://www.bqg5200.com/files/article/image/0/508/508s.jpg","link":"http://www.bqg5200.com/xiaoshuo/0/508/","title":"醒在末世"},{"desc":"不干平凡，自当破命路，与天争，我命由我不由天！平凡中走出一段传奇，打破既定的命，我要成为主宰的王！！","img":"http://www.bqg5200.com/files/article/image/1/1630/1630s.jpg","link":"http://www.bqg5200.com/xiaoshuo/1/1630/","title":"破命之路"},{"desc":"() () &amp;amp;nbsp&amp;amp;nbsp&amp;amp;nbsp&amp;amp;nbsp经历了飞机失事的颜辞醒来后","img":"http://www.bqg5200.com/files/article/image/0/915/915s.jpg","link":"http://www.bqg5200.com/xiaoshuo/0/915/","title":"未来女王之路"},{"desc":"我从末世醒来，面对空无一人的世界，没有武侠秘籍，没有军队，要怎么活下去","img":"http://www.bqg5200.com/files/article/image/2/2549/2549s.jpg","link":"http://www.bqg5200.com/xiaoshuo/2/2549/","title":"末世我孤独地醒来"},{"desc":"这个世界上没有一个亡灵解决不了的事情，如果有，那就是一百万个，如果还有，那就是一千万个，如果再有...星际轨道炮准备…","img":"http://www.bqg5200.com/files/article/image/6/6762/6762s.jpg","link":"http://www.bqg5200.com/xiaoshuo/6/6762/","title":"巫妖王的科技之路"},{"desc":"战斗法师的到来改变了世界，为了对抗他们，魔法师族群不断要求快、更快、再快。 少年恺撒真的不快，但他专破快。 …","img":"http://www.bqg5200.com/files/article/image/7/7205/7205s.jpg","link":"http://www.bqg5200.com/xiaoshuo/7/7205/","title":"龙醒法师"},{"desc":"一觉醒来，从18变成了26岁的陈昭有了老婆女儿。在丢失空缺的8年人生中，心性稚嫩且慵懒的他，该如何挽回一个即将支离破碎的家,重新自己的人生？ ...","img":"http://www.bqg5200.com/files/article/image/6/6075/6075s.jpg","link":"http://www.bqg5200.com/xiaoshuo/6/6075/","title":"一觉醒来有了老婆女儿"},{"desc":"这是一个无比耀眼的圈子，在这里每向上爬一步，都要付出巨大的努力，都要踩下无数竞争者的脑袋。 数不清的天才怀揣…","img":"http://www.bqg5200.com/files/article/image/4/4554/4554s.jpg","link":"http://www.bqg5200.com/xiaoshuo/4/4554/","title":"好莱坞之路"}]
+            obj:[{"desc":"“路平，起床上课。” “再睡五分钟。” “给我起来！” 哗！阳光洒下，照遍路平全身。 …","img":"http://www.bqg5200.com/files/article/image/0/198/198s.jpg","link":"http://www.bqg5200.com/xiaoshuo/0/198/","title":"天醒之路"},{"desc":"一觉醒来，世界大变。 熟悉的高中传授的是魔法，告诉大家要成为一名出色的魔法师。 居住的都市之外游荡着袭击人类的魔物妖兽，虎视眈眈。 崇尚科学的世界变成了崇尚魔法，偏偏","img":"http://www.bqg5200.com/files/article/image/0/77/77s.jpg","link":"http://www.bqg5200.com/xiaoshuo/0/77/","title":"全职法师"}],
+            historyData:[{"bookLink":"http://www.bqg5200.com/xiaoshuo/0/198/","bookName":"天醒之路","time":"2017-07-23 14:52:09","title":"第七百六十五章 血雨","url":"http://www.bqg5200.com/xiaoshuo/0/198/5527555.html"}]
         },
         methods:{
             ItemClick:function(item){
                 location.href='catalog.html?'+JSON.stringify(item);
+            },
+            HistoryClick(item){
+                location.href='book.html?'+JSON.stringify(item);
             }
         }
 
     });
+
+    function LoadData(json){
+        var obj = $.parseJSON(json);
+        model.historyData=obj;
+        loading();
+    }
+
+    $(function(){
+        loading();
+        android.GetHomeData();
+    })
 </script>

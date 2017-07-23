@@ -7,10 +7,21 @@ import java.util.HashMap;
  */
 
 public class Chapter {
+    public  String bookName;
+    public  String bookLink;
     public  String title;
     public  String url;
     public  Integer index;
     public  String content;
+    public  String time;
+
+    /**
+     * 上一章
+     */
     public  String upChapter;
+
+    /**
+     * 下一章
+     */
     public  String nextChapter;
 }

@@ -10,6 +10,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**
@@ -53,6 +54,8 @@ public class bqg5200Class {
             Integer i=0;
             for (Element item: ele) {
                 Chapter chapter=new Chapter();
+                chapter.bookName=obj.title;
+                chapter.bookLink=obj.link;
                 chapter.title=item.text().trim();
                 chapter.url=host+item.attr("href");
                 chapter.index=i++;
@@ -72,8 +75,33 @@ public class bqg5200Class {
         try {
             Document doc= Jsoup.connect(obj.url).get();
             String content=doc.select("#content").html();
+
+            obj.title=doc.select(".title h1").text().trim();
             content=content.substring(content.lastIndexOf("</div>")+"</div>".length());
-            return content;
+
+            String headHtml=doc.head().html();
+            //host链接
+            Integer hostS=headHtml.indexOf("var index_page = \"")+"var index_page = \"".length();
+            String hostStr=headHtml.substring(hostS,headHtml.indexOf("\";",hostS));
+            //上一章
+            Integer upS=headHtml.indexOf("var preview_page = \"")+"var preview_page = \"".length();
+            String upLink=hostStr+headHtml.substring(upS,headHtml.indexOf("\";",upS));
+            //下一章
+            Integer nextS=headHtml.indexOf("var next_page = \"")+"var next_page = \"".length();
+            String nextLink=hostStr+headHtml.substring(nextS,headHtml.indexOf("\";",nextS));
+
+            obj.content=URLEncoder.encode(URLEncoder.encode(content,"utf-8"),"utf-8");
+            if (upLink.contains(".html"))
+                obj.upChapter=upLink;
+            else
+                obj.upChapter="";
+            if (nextLink.contains(".html"))
+                obj.nextChapter=nextLink;
+            else
+                obj.nextChapter="";
+
+            String json=new Gson().toJson(obj);
+            return json;
 
         } catch (IOException e) {
             e.printStackTrace();

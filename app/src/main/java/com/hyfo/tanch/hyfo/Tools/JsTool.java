@@ -1,6 +1,9 @@
 package com.hyfo.tanch.hyfo.Tools;
 
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Handler;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -10,14 +13,20 @@ import com.google.gson.Gson;
 import com.hyfo.tanch.hyfo.Models.Book;
 import com.hyfo.tanch.hyfo.Models.Chapter;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
 /**
  * Created by tanch on 2017/7/2.
  */
 
 public class JsTool {
     WebView webView;
-    public  JsTool(WebView wv){
+    DbHelper db;
+    public  JsTool(WebView wv,DbHelper dbHelper){
         webView=wv;
+        db=dbHelper;
     }
     //显示toast消息
     @JavascriptInterface
@@ -56,11 +65,11 @@ public class JsTool {
     }
 
     @JavascriptInterface
-    public void GetBook(String json) {
-        final Book obj=new Gson().fromJson(json,Book.class);
+    public void GetBook(final String json) {
         new Handler().post(new Runnable() {
             @Override
             public void run() {
+                Book obj=new Gson().fromJson(json,Book.class);
                 String ret=new bqg5200Class().GetList(obj);
                 PostJs("LoadData",ret);
             }
@@ -69,9 +78,60 @@ public class JsTool {
     }
 
     @JavascriptInterface
-    public void GetContent(String json) {
-        Chapter obj=new Gson().fromJson(json,Chapter.class);
-        String ret=new bqg5200Class().GetContent(obj);
-        PostJs("LoadData",ret);
+    public void GetContent(final String json) {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                Chapter obj=new Gson().fromJson(json,Chapter.class);
+                AddHistory(obj);
+                String ret=new bqg5200Class().GetContent(obj);
+                PostJs("LoadData",ret);
+            }
+        });
+    }
+
+    @JavascriptInterface
+    public void GetHomeData() {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+               ArrayList<Chapter> data = GetHistory();
+               String json=new Gson().toJson(data);
+               PostJs("LoadData",json);
+            }
+        });
+    }
+
+    /**
+     * 添加浏览历史
+     * @param obj
+     */
+    private void AddHistory(Chapter obj)
+    {
+        ContentValues values=new ContentValues();
+        values.put("bookName",obj.bookName);
+        values.put("bookLink",obj.bookLink);
+        values.put("title",obj.title);
+        values.put("url",obj.url);
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        values.put("time",sdf.format(new Date(System.currentTimeMillis())));
+        db.Insert("THistory",values);
+    }
+
+    private ArrayList<Chapter> GetHistory()
+    {
+        ArrayList<Chapter> ret =new ArrayList<Chapter>();
+        Cursor cursor = db.Query("THistory");
+        while (cursor.moveToNext())
+        {
+            Chapter chapter=new Chapter();
+            chapter.bookName=cursor.getString(1);
+            chapter.bookLink=cursor.getString(2);
+            chapter.title=cursor.getString(3);
+            chapter.url=cursor.getString(4);
+            chapter.time=cursor.getString(5);
+            ret.add(chapter);
+        }
+        return  ret;
     }
 }

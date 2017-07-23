@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/jquery.mobile.custom.min.js"></script>
 </head>
 
 <body id="container">
@@ -59,15 +58,35 @@
 </html>
 <script>
 
-    function LoadData(ret){
-        $('.book-content').html(ret);
+    function LoadData(json){
+        var ret=JSON.parse(json);
+        $('.book-content').html(decodeURIComponent(ret.content));
+        $('.book-footer').show();
+        
+        loading();
+        if(ret.nextChapter.length > 0) {
+            //下一章
+            $('.book-footer').click(function(){
+                ret.content='';
+                ret.url=ret.nextChapter;
+                location.href='book.html?'+JSON.stringify(ret);
+                
+            });
+        }else{
+            $('.book-footer').html('没有了');
+        }
+        
     }
 
-    $(function(){
-         var obj=QueryJsonObj();
-         $('.header-title').html(obj.title);
-
-         var json=QueryJson();
-         android.GetContent(json);
+    $(function () {
+        window.history.pushState({}, "", '#');
+        window.addEventListener("popstate", function (e) {
+            location.href = "index.html";
+        }, false);
+        var obj = QueryJsonObj();
+        $('.header-title').html(obj.title);
+        var json = QueryJson();
+        loading();
+        android.GetContent(json);
     })
 </script>

@@ -51,7 +51,7 @@ h4{
 
 .container{
     overflow: auto;
-    padding: .6rem 0 .14rem 0;
+    padding: .62rem 0 .14rem 0;
 }
 .book-item{
     padding: .14rem;
@@ -150,6 +150,52 @@ h4{
     background: #fff;
     text-align: center;
     font-size: .18rem;
+    display: none;
+}
+.history-list{
+    overflow: auto;
+}
+
+.history-item{
+    background: #fff;
+    font-size: .14rem;
+    padding: .1rem;
+    overflow: auto;
+    border-bottom: .01rem solid #f7f7f7;
+}
+.history-item>i:first-child{
+    background: url(../img/history.svg);
+    float: left;
+    width: .23rem;
+    height: .23rem;
+    display: block;
+    background-size: 100% 100%;
+    margin-top: -.07rem;
+}
+.history-item>i:nth-child(5){
+    background: url(../img/catalog-right.svg);
+    float: right;
+    width: .23rem;
+    height: .23rem;
+    display: block;
+    margin-top: -.07rem;
+}
+.history-item>p{
+    margin: 0;
+    padding: 0;
+   float: left;
+   line-height: .23rem;
+   padding-left: .1rem;
+}
+.history-item>span:nth-child(4){
+    color: #979797;
+    font-size: .12rem;
+    margin-left: .3rem;
+}
+.history-item>span:nth-child(6){
+    float: right;
+    margin-top: -.03rem;
+    color: #979797;
 }
 
 /*加载*/
@@ -209,12 +255,11 @@ h4{
 .footer-content{
     position: fixed;
     bottom: 0;
-    width: calc(100% - .2rem);
+    width: 100% ;
     background: #fff;
     transition: .4s;
     z-index: 1;
     font-size: .16rem;
-    padding: .2rem .1rem;
 }
 .footer-container-hidden .footer-content{
     bottom: -100%;
@@ -229,9 +274,8 @@ h4{
 }
 .footer-content ul li{
     float: left;
-    width: .45rem;
-    margin: .1rem;
-    padding: .1rem;
+    width: 25%;
+    padding: .2rem 0;
 }
 .footer-content ul li>span{
     width: 100%;

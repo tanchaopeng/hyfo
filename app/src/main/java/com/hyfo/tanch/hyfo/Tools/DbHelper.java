@@ -39,7 +39,7 @@ public class DbHelper extends SQLiteOpenHelper {
         //String.format("javascript:%s('%s');",mthodName,json)
         this.db = db;
         System.out.println("创建数据库");
-        String historyStr=String.format(CREATE_TBL,"THistory","bookName text,bookUrl text,bookImg text,bookDesc text,bookDesc text,chapterName text,chapterUrl text,time text");
+        String historyStr=String.format(CREATE_TBL,"THistory","bookName text,bookLink text,title text,url text,time datetime");
         db.execSQL(historyStr);
 
         //String collectionStr=Stcring.format(CREATE_TBL,"TCollection","");
@@ -70,7 +70,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public Cursor Query(String tableName){
         SQLiteDatabase db = getReadableDatabase();
         //获取Cursor
-        Cursor c = db.query(tableName, null, null, null, null, null, null, null);
+        Cursor c = db.query(tableName, null, null, null, null, null, "time DESC", "0,10");
         return c;
     }
 

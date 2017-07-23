@@ -1,6 +1,7 @@
 package com.hyfo.tanch.hyfo;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.WindowManager;
@@ -9,20 +10,26 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
+import com.hyfo.tanch.hyfo.Tools.DbHelper;
 import com.hyfo.tanch.hyfo.Tools.JsTool;
 
 public class MainActivity extends Activity {
     WebView webView;
+    DbHelper db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //透明状态栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //数据库
+        db=new DbHelper(this);
 
         webView = (WebView) findViewById(R.id.webView);
         InitWebView(webView,"file:///android_asset/index.html");
+
         //InitWebView(webView,"http://www.baidu.com");
     }
 
@@ -45,7 +52,8 @@ public class MainActivity extends Activity {
         wv.setWebChromeClient(new WebChromeClient());
 
         //注册jstool类型，html调用
-        wv.addJavascriptInterface(new JsTool(wv),"android");
+
+        wv.addJavascriptInterface(new JsTool(wv,db),"android");
 
         //加载默认地址
         if (!defaultUrl.isEmpty())
@@ -61,6 +69,11 @@ public class MainActivity extends Activity {
         {
             super.onBackPressed();
         }
+    }
 
+    @Override
+    protected void onDestroy() {
+        db.Close();
+        super.onDestroy();
     }
 }
