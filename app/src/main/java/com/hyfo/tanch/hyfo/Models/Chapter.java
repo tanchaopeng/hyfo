@@ -8,6 +8,8 @@ import java.util.HashMap;
 
 public class Chapter {
     public  String bookName;
+    public  String bookImg;
+    public  String bookDesc;
     public  String bookLink;
     public  String title;
     public  String url;

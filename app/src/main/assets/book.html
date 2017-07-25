@@ -46,10 +46,10 @@
                     <embed  src="img/search.svg" />
                     <span>搜索</span>
                 </li>
-                <!--<li class="footer-exit">
-                    <embed  src="img/exit.svg" />
-                    <span>退出</span>
-                </li>-->
+                <li class="footer-exit" id="collection" data-status='false'>
+                    <embed  src="img/collection-blue.svg" />
+                    <span>收藏</span>
+                </li>
             </ul>
         </div>
     </div>
@@ -79,14 +79,30 @@
     }
 
     $(function () {
+        //返回监听
         window.history.pushState({}, "", '#');
         window.addEventListener("popstate", function (e) {
             location.href = "index.html";
         }, false);
+
+        //章节对象
         var obj = QueryJsonObj();
         $('.header-title').html(obj.title);
         var json = QueryJson();
         loading();
         android.GetContent(json);
+
+        $('#collection').click(function(){
+            var json=QueryJson();
+            var status=$(this).attr('data-status');
+            if(status){
+                android.CollectionBook(json,'false');
+                $(this).attr('data-status','false');
+            }else{
+                android.CollectionBook(json,'true');
+                $(this).attr('data-status','true');
+            }
+            
+        });
     })
 </script>

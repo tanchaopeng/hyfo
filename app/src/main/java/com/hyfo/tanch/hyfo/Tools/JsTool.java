@@ -102,6 +102,51 @@ public class JsTool {
         });
     }
 
+    @JavascriptInterface
+    public void CollectionBook(String json,Boolean status)
+    {
+        Chapter obj=new Gson().fromJson(json,Chapter.class);
+        if (status)
+            AddCollection(obj);
+        else
+            RemoveCollection(obj);
+    }
+
+    /**
+     * 添加收藏
+     * @param obj
+     */
+    private void AddCollection(Chapter obj)
+    {
+        Cursor c=db.Query("TCollection","bookName='"+obj.bookName+"'");
+        if (c.getCount()>0){
+            return;
+        }
+        ContentValues values=new ContentValues();
+        values.put("bookName",obj.bookName);
+        values.put("bookDesc",obj.bookDesc);
+        values.put("bookImg",obj.bookImg);
+        values.put("bookLink",obj.bookLink);
+        values.put("chapterTitle",obj.title);
+        values.put("chapterLink",obj.url);
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        values.put("time",sdf.format(new Date(System.currentTimeMillis())));
+        db.Insert("TCollection",values);
+    }
+    /**
+     * 移除收藏
+     * @param obj
+     */
+    private void RemoveCollection(Chapter obj)
+    {
+        Cursor c=db.Query("TCollection","bookName='"+obj.bookName+"'");
+        if (c.getCount()>0){
+            c.moveToFirst();
+            Integer id=c.getInt(0);
+            db.Delete("TCollection",id);
+        }
+    }
+
     /**
      * 添加浏览历史
      * @param obj
@@ -134,4 +179,6 @@ public class JsTool {
         }
         return  ret;
     }
+
+
 }

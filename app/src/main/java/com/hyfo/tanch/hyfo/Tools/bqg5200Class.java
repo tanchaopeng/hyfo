@@ -56,6 +56,8 @@ public class bqg5200Class {
                 Chapter chapter=new Chapter();
                 chapter.bookName=obj.title;
                 chapter.bookLink=obj.link;
+                chapter.bookDesc=obj.desc;
+                chapter.bookImg=obj.img;
                 chapter.title=item.text().trim();
                 chapter.url=host+item.attr("href");
                 chapter.index=i++;

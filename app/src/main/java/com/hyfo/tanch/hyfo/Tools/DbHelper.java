@@ -42,8 +42,8 @@ public class DbHelper extends SQLiteOpenHelper {
         String historyStr=String.format(CREATE_TBL,"THistory","bookName text,bookLink text,title text,url text,time datetime");
         db.execSQL(historyStr);
 
-        //String collectionStr=Stcring.format(CREATE_TBL,"TCollection","");
-        //db.execSQL(collectionStr);
+        String collectionStr=String.format(CREATE_TBL,"TCollection","bookName text,,bookDesc text,bookLink text,bookImg text,title text,chapterTitle text,chapterLink text,time datetime");
+        db.execSQL(collectionStr);
     }
     //更新数据库回调
     @Override
@@ -73,11 +73,25 @@ public class DbHelper extends SQLiteOpenHelper {
         Cursor c = db.query(tableName, null, null, null, null, null, "time DESC", "0,10");
         return c;
     }
+    //查询方法
+    public Cursor Query(String tableName,String whereQuery){
+        SQLiteDatabase db = getReadableDatabase();
+        //获取Cursor
+        Cursor c = db.query(tableName, null, whereQuery, null, null, null, null, null);
+        return c;
+    }
 
     //更新数据库的内容
     public void Update(String tableName,ContentValues values, String whereClause, String[]whereArgs){
         SQLiteDatabase db = getWritableDatabase();
         db.update(tableName, values, whereClause, whereArgs);
+    }
+
+
+    //删除数据库的内容
+    public void Delete(String tableName,Integer id){
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(tableName,"id='"+id+"'",null);
     }
 
     //关闭数据库
