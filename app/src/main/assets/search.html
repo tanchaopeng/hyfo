@@ -83,12 +83,16 @@
     });
     function LoadData(json){
         model.obj=$.parseJSON(json);
+        loading();
     }
     $(function(){
          $('.search-input').keypress(function(e) {
             if(e.which == 13) {
                 var key=$(this).val();
+                 $('.search-input').blur();
+                loading();
                 android.Search(key);
+
             }
          });
     });

@@ -60,6 +60,7 @@
 
     function LoadData(json){
         var ret=JSON.parse(json);
+        $('.header-title').html(ret.title);
         $('.book-content').html(decodeURIComponent(ret.content));
         $('.book-footer').show();
         

@@ -59,9 +59,15 @@ public class JsTool {
     }
 
     @JavascriptInterface
-    public void Search(String key) {
-        String ret = new bqg5200Class().Search(key);
-        PostJs("LoadData",ret);
+    public void Search(final String key) {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                String ret = new bqg5200Class().Search(key);
+                PostJs("LoadData",ret);
+            }
+        });
+
     }
 
     @JavascriptInterface
@@ -83,8 +89,10 @@ public class JsTool {
             @Override
             public void run() {
                 Chapter obj=new Gson().fromJson(json,Chapter.class);
-                AddHistory(obj);
+                //AddHistory(obj);
                 String ret=new bqg5200Class().GetContent(obj);
+                AddHistory(obj);
+                AddCollection(obj);
                 PostJs("LoadData",ret);
             }
         });
@@ -120,6 +128,14 @@ public class JsTool {
     {
         Cursor c=db.Query("TCollection","bookName='"+obj.bookName+"'");
         if (c.getCount()>0){
+            c.moveToFirst();
+            String id =  c.getString(0);
+            ContentValues values=new ContentValues();
+            values.put("chapterTitle",obj.title);
+            values.put("chapterLink",obj.url);
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            values.put("time",sdf.format(new Date(System.currentTimeMillis())));
+            db.Update("TCollection",values,"id="+id,null);
             return;
         }
         ContentValues values=new ContentValues();

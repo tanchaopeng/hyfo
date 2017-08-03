@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by tanch on 2017/7/17.
@@ -42,8 +43,14 @@ public class DbHelper extends SQLiteOpenHelper {
         String historyStr=String.format(CREATE_TBL,"THistory","bookName text,bookLink text,title text,url text,time datetime");
         db.execSQL(historyStr);
 
-        String collectionStr=String.format(CREATE_TBL,"TCollection","bookName text,,bookDesc text,bookLink text,bookImg text,title text,chapterTitle text,chapterLink text,time datetime");
-        db.execSQL(collectionStr);
+        try {
+            String collectionStr=String.format(CREATE_TBL,"TCollection","bookName text,bookDesc text,bookLink text,bookImg text,title text,chapterTitle text,chapterLink text,time datetime");
+            db.execSQL(collectionStr);
+        }catch (Exception e)
+        {
+            Log.d("CREATE_TBL Exception", "onCreate: "+e.getMessage());
+        }
+
     }
     //更新数据库回调
     @Override
