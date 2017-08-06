@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
         webView = (WebView) findViewById(R.id.webView);
         InitWebView(webView,"file:///android_asset/index.html");
 
-        //InitWebView(webView,"http://www.baidu.com");
+        //(webView,"http://www.baidu.com");
     }
 
     private void InitWebView(final WebView wv, String defaultUrl) {

@@ -27,17 +27,17 @@ $(function () {
         }
     });
 })
-// $(document).scroll(event, function () {
-//         //窗口高度
-//         var winh = $(window).height();
-//         //滚动条高度
-//         var scrh = $(window).scrollTop();
-//         if (scrh / winh > 0.1) {
-//             $('.header').addClass('header-hidden');
-//         } else {
-//             $('.header').removeClass('header-hidden');
-//         }
-//     });
+$(document).scroll(event, function () {
+        //窗口高度
+        var winh = $(window).height();
+        //滚动条高度
+        var scrh = $(window).scrollTop();
+        if (scrh / winh > 0.1) {
+            $('.header').addClass('header-hidden');
+        } else {
+            $('.header').removeClass('header-hidden');
+        }
+    });
 
 // 加载 显示/隐藏
 function loading(){
@@ -46,6 +46,9 @@ function loading(){
         return false;
     }else if($('.loading-container').length>0){
         $('.loading-container').addClass('loading-container-hidden');
+        setTimeout(function(){
+            $('.loading-container').remove();
+        },600);
         return false;
     }
     var html='<div class="loading-container"><img src="img/loading.svg" /></div>';
