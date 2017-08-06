@@ -3,6 +3,7 @@
     package="com.hyfo.tanch.hyfo">
     <!--网络权限-->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo"

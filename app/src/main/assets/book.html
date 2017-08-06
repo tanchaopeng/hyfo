@@ -29,6 +29,13 @@
     <div class="footer-container footer-container-hidden">
         <div class="footer-background"></div>
         <div class="footer-content">
+            <div style="height:.3rem;padding:.3rem .3rem 0 .3rem;">
+                <div class="progress-bar">
+                    <div class="progress-liner">
+                        <i class="progress-dot" id="progress-dot"></i>
+                    </div>
+                </div>
+            </div>
             <ul>
                <li class="footer-exit" onclick="location.href='index.html'">
                     <embed  src="img/home.svg" />
@@ -46,17 +53,49 @@
                     <embed  src="img/search.svg" />
                     <span>搜索</span>
                 </li>
-                <li class="footer-exit" id="collection" data-status='false'>
+                <!--<li class="footer-exit" id="collection" data-status='false'>
                     <embed  src="img/collection-blue.svg" />
                     <span>收藏</span>
-                </li>
+                </li>-->
             </ul>
+
         </div>
     </div>
 </body>
 
 </html>
 <script>
+
+    //----亮度调整
+    var lightStatus=false;
+    var lightX=0;
+
+    var pbX1=$('.progress-bar').offset().left;
+    var pbx2=pbX1+$('.progress-bar').width();
+    var light=0;
+    $('#progress-dot').on('touchstart', function (e) {
+        lightStatus=true;
+        lightX = e.targetTouches[0].clientX;
+    });
+    $('#progress-dot').on('touchmove', function (e) {
+        if (!lightStatus){
+            return false;
+        }
+        var x = e.targetTouches[0].clientX;
+
+        var px=x-pbX1;
+        var b=px/pbx2;
+        if (b >= 0 && b <= 1) {
+            $('.progress-liner').css('width', b*100 + '%');
+            light=b;
+        }
+    });
+    $('#progress-dot').on('touchend', function (e) {
+        lightStatus=false;
+        var v=255*light;
+        android.SetLight(v);
+    });
+    //----亮度调整结束
 
     function LoadData(json){
         var ret=JSON.parse(json);

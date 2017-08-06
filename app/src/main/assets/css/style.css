@@ -271,6 +271,7 @@ h4{
     height: 100%;
     margin: 0;
     padding: 0;
+    overflow: auto;
 }
 .footer-content ul li{
     float: left;
@@ -301,6 +302,34 @@ h4{
 .footer-content ul li:active span{
     color: #000;
     transition: .4s;
+}
+
+.progress-bar{
+    width: 100%;
+    height: .07rem; 
+    border-radius: .35rem;
+    background: lightgrey;
+    padding: 0 .01rem;
+}
+.progress-liner{
+    height: .05rem;
+    background: #fff;
+    width: 20%;
+    border-radius: .35rem;
+    top: .01rem; 
+    position: relative;
+}
+.progress-dot{
+    height: .25rem;
+    width: .25rem;
+    position: relative;
+    top: -.1rem; 
+    right: -.1rem;
+    display: block; 
+    float: right; 
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 0.1rem rgba(0,0,0,.3);
 }
 
 /*搜索栏*/

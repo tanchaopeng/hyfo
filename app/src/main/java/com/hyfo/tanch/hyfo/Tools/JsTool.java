@@ -1,10 +1,16 @@
 package com.hyfo.tanch.hyfo.Tools;
 
 
+import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Toast;
@@ -196,5 +202,28 @@ public class JsTool {
         return  ret;
     }
 
+    @JavascriptInterface
+    public void SetLight(final int v) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Window window = ((Activity) webView.getContext()).getWindow();
+                    WindowManager.LayoutParams lp = window.getAttributes();
+                    if (v == -1) {
+                        lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+                    } else {
+                        lp.screenBrightness = (v <= 0 ? 1 : v) / 255f;
+                    }
+                    window.setAttributes(lp);
+                }
+                catch (Exception e ){
+                    Toast.makeText(webView.getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                    Log.d("设置亮度异常", e.getMessage());
+                }
 
+            }
+        });
+
+    }
 }
